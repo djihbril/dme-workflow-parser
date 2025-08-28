@@ -28,8 +28,8 @@ namespace dme_workflow_parser.Tests;
     {
         protected override Dictionary<string, string?>? InMemorySettings => new()
         {
-            {"Settings:InputFolder", "C:\\projects\\dotnet\\dme-workflow-parser\\input"},
-            {"Settings:OutputFolder", "C:\\projects\\dotnet\\dme-workflow-parser\\output"},
+            {"Settings:InputFolder", "C:\\projects\\dotnet\\dme-workflow-parser\\Input"},
+            {"Settings:OutputFolder", "C:\\projects\\dotnet\\dme-workflow-parser\\Output"},
             {"Settings:TextInputFile", "physician_note.txt"},
             {"Settings:JsonInputFile", "physician_note.json"},
             {"Settings:OutputFile", "output_1.json"},
@@ -40,9 +40,9 @@ namespace dme_workflow_parser.Tests;
         public void ShouldFillSettingsWithData()
         {
             Assert.NotNull(Settings);
-            Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\input", Settings.InputFolder);
-            Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\output", Settings.OutputFolder);
-            Assert.Equal("physician_note.txt", Settings.TextInputFile);
+        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Input", Settings.InputFolder);
+        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Output", Settings.OutputFolder);
+        Assert.Equal("physician_note.txt", Settings.TextInputFile);
             Assert.Equal("physician_note.json", Settings.JsonInputFile);
             Assert.Equal("output_1.json", Settings.OutputFile);
             Assert.NotNull(Settings.ExternalApi);

@@ -11,10 +11,10 @@ public record ExternalApiSettings(string Endpoint);
 /// </summary>
 public class Settings
 {
-    public string InputFolder { get; set; } = string.Empty;
-    public string OutputFolder { get; set; } = string.Empty;
-    public string TextInputFile { get; set; } = string.Empty;
-    public string JsonInputFile { get; set; } = string.Empty;
-    public string OutputFile { get; set; } = "output.json";
-    public ExternalApiSettings ExternalApi { get; set; } = new("https://alert-api.com/DrExtract");
+    public string InputFolder { get; init; } = string.Empty;
+    public string OutputFolder { get; init; } = string.Empty;
+    public string TextInputFile { get; init; } = string.Empty;
+    public string JsonInputFile { get; init; } = string.Empty;
+    public string OutputFile { get; init; } = "output.json";
+    public ExternalApiSettings ExternalApi { get; init; } = new("https://alert-api.com/DrExtract");
 }

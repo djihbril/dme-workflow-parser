@@ -50,8 +50,8 @@ public class WhenLoadingSettingsFromAppSettingsJson : BehavesLikeLoadingSettings
     public void ShouldFillSettingsWithDataFromAppsettingsJson()
     {
         Assert.NotNull(Settings);
-        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\input", Settings.InputFolder);
-        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\output", Settings.OutputFolder);
+        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Input", Settings.InputFolder);
+        Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Output", Settings.OutputFolder);
         Assert.Equal("physician_note.txt", Settings.TextInputFile);
         Assert.Equal("physician_note.json", Settings.JsonInputFile);
         Assert.Equal("output.json", Settings.OutputFile);
