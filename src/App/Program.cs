@@ -29,7 +29,7 @@ ServiceProvider serviceProvider = services
 // logger.LogInformation("Workflow parser starting with {Threads} threads", settings.MaxThreads);
 
 NoteParser parser = serviceProvider.GetRequiredService<NoteParser>();
-var (errorMsg, order) = parser.Parse();
+var (errorMsg, order) = parser.Parse(true);
 
 if (errorMsg != null) return;
 
@@ -40,6 +40,12 @@ string serializedOrder = JsonSerializer.Serialize(order,
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     });
+
+if (settings != null)
+{
+    string outputPath = Path.Combine(settings.OutputFolder, settings.OutputFile);
+    File.WriteAllText(outputPath, serializedOrder);
+}
 
 using (var h = new HttpClient())
 {
