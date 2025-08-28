@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using dme_workflow_parser.Models;
 
@@ -61,12 +60,7 @@ public partial class NoteParser(Settings settings /*, ILogger<NoteParser> logger
                 string jsonContent = File.ReadAllText(notePath);
 
                 // We'll assume that the notes are in a property called "data".
-                JsonContent? content = JsonSerializer.Deserialize<JsonContent>(jsonContent, new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-                });
+                JsonContent? content = JsonSerializer.Deserialize<JsonContent>(jsonContent, NoteSender.jsonSerializerOptions);
                 content?.Data
                     ?.Split(['\n', '\r'], StringSplitOptions.RemoveEmptyEntries)
                     ?.ToList()

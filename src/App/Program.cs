@@ -3,15 +3,11 @@
 /// POSTs the extracted data as JSON to an external API endpoint.
 /// </summary>
 
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using dme_workflow_parser;
 using dme_workflow_parser.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 
 // Load and register configuration settings along with other services.
 var config = ConfigurationLoader.Load();
@@ -19,9 +15,14 @@ Settings? settings = config.GetSection("Settings").Get<Settings>();
 
 ServiceCollection services = new();
 
-ServiceProvider serviceProvider = services
+services
     .AddSingleton(settings ?? new())
+    .AddHttpClient(settings?.httpClientKey ?? "externalEndpoint");
+
+
+ServiceProvider serviceProvider = services
     .AddTransient<NoteParser>()
+    .AddSingleton<INoteSender, NoteSender>()
     // .AddLogging(builder => builder.AddConsole())
     .BuildServiceProvider();
 
@@ -29,17 +30,13 @@ ServiceProvider serviceProvider = services
 // logger.LogInformation("Workflow parser starting with {Threads} threads", settings.MaxThreads);
 
 NoteParser parser = serviceProvider.GetRequiredService<NoteParser>();
+NoteSender sender = (NoteSender)serviceProvider.GetRequiredService<INoteSender>();
+
 var (errorMsg, order) = parser.Parse(true);
 
 if (errorMsg != null) return;
 
-string serializedOrder = JsonSerializer.Serialize(order,
-    new JsonSerializerOptions
-    {
-        WriteIndented = true,
-        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    });
+string serializedOrder = JsonSerializer.Serialize(order, NoteSender.jsonSerializerOptions);
 
 if (settings != null)
 {
@@ -47,9 +44,6 @@ if (settings != null)
     File.WriteAllText(outputPath, serializedOrder);
 }
 
-using (var h = new HttpClient())
-{
-    var u = "https://alert-api.com/DrExtract";
-    var c = new StringContent(serializedOrder, Encoding.UTF8, "application/json");
-    var resp = h.PostAsync(u, c).GetAwaiter().GetResult();
-}
+bool sent = await sender.PostOrderAsync(settings?.ExternalApi.Endpoint ?? "", serializedOrder);
+
+Console.WriteLine($"DME order{(sent ? string.Empty : " not")} sent.");
