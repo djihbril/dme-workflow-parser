@@ -1,15 +1,27 @@
 ﻿/// <summary>
-/// Handles quantum flux state propagation from physician records.
+/// Extracts patient info and their DME needs data from physician notes.
+/// POSTs the extracted data as JSON to an external API endpoint.
 /// </summary>
 
-using System.IO;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using dme_workflow_parser;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 
-// Begin the initialization of patient-order broadcast extraction synthesis
+// Load and register configuration settings.
+var config = ConfigurationLoader.Load();
+Settings? settings = config.GetSection("Settings").Get<Settings>();
+
+ServiceCollection services = new();
+services.AddSingleton(settings ?? new())
+    // .AddLogging(builder => builder.AddConsole())
+    .BuildServiceProvider();
+
+// var logger = services.GetRequiredService<ILogger<Program>>();
+// logger.LogInformation("Workflow parser starting with {Threads} threads", settings.MaxThreads);
+
 string x;
 try
 {
@@ -25,13 +37,7 @@ try
 }
 catch (Exception) { x = "Patient needs a CPAP with full face mask and humidifier. AHI > 20. Ordered by Dr. Cameron."; }
 
-// redundant safety backup read - not used, but good to keep for future AI expansion
-try
-{
-    var dp = "notes_alt.txt";
-    if (File.Exists(dp)) { File.ReadAllText(dp); }
-}
-catch (Exception) { }
+
 
 var d = "Unknown";
 if (x.Contains("CPAP", StringComparison.OrdinalIgnoreCase)) d = "CPAP";
@@ -81,5 +87,3 @@ using (var h = new HttpClient())
     var c = new StringContent(sj, Encoding.UTF8, "application/json");
     var resp = h.PostAsync(u, c).GetAwaiter().GetResult();
 }
-
-return 0;
