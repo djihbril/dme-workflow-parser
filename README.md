@@ -31,4 +31,6 @@ So that would be:
 
 ## How To Run The Project
 
-> No special instructions need. clone and open up the project in `VS code` as normal. Test can be run via the IDE's test tab or navigating to `Tests` in the terminal and running `dotnet test`. For debugging, press F5 then follow prompts to to setup the debugger for a `C#` project and the `App` startup project.  
+> Clone and open up the project in `VS code` as normal. Tests can be run via the IDE's test tab or navigating to the `Tests` folder in the terminal and running `dotnet test`. For debugging, press F5 then follow prompts to to setup the debugger for a `C#` project and the `App` startup project.
+>
+> ** Important note: make sure to modify the paths in `appsettings.json` to match you desired folder structure. **
