@@ -15,7 +15,8 @@ public class Settings
     public string OutputFolder { get; init; } = string.Empty;
     public string TextInputFile { get; init; } = string.Empty;
     public string JsonInputFile { get; init; } = string.Empty;
-    public string httpClientKey { get; init; } = "externalEndpoint";
+    public string LogFilePath { get; init; } = string.Empty;
+    public string HttpClientKey { get; init; } = "externalEndpoint";
     public string OutputFile { get; init; } = "output.json";
     public ExternalApiSettings ExternalApi { get; init; } = new("https://alert-api.com/DrExtract");
 }
