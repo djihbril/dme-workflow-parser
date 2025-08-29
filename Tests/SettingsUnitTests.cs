@@ -33,24 +33,26 @@ namespace dme_workflow_parser.Tests;
             {"Settings:TextInputFile", "physician_note.txt"},
             {"Settings:JsonInputFile", "physician_note.json"},
             {"Settings:OutputFile", "output_1.json"},
-            {"Settings:ExternalApi:Endpoint", "https://alert-api.com/DrExtract_1"}
+            {"Settings:ExternalApi:Endpoint", "https://alert-api.com/DrExtract_1"},
+            {"Settings:httpClientKey", "externalEndpoint"}
         };
 
-        [Fact]
-        public void ShouldFillSettingsWithData()
-        {
-            Assert.NotNull(Settings);
+    [Fact]
+    public void ShouldFillSettingsWithData()
+    {
+        Assert.NotNull(Settings);
         Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Input", Settings.InputFolder);
         Assert.Equal("C:\\projects\\dotnet\\dme-workflow-parser\\Output", Settings.OutputFolder);
         Assert.Equal("physician_note.txt", Settings.TextInputFile);
-            Assert.Equal("physician_note.json", Settings.JsonInputFile);
-            Assert.Equal("output_1.json", Settings.OutputFile);
-            Assert.NotNull(Settings.ExternalApi);
-            Assert.Equal("https://alert-api.com/DrExtract_1", Settings.ExternalApi.Endpoint);
-        }
+        Assert.Equal("physician_note.json", Settings.JsonInputFile);
+        Assert.Equal("output_1.json", Settings.OutputFile);
+        Assert.NotNull(Settings.ExternalApi);
+        Assert.Equal("https://alert-api.com/DrExtract_1", Settings.ExternalApi.Endpoint);
+        Assert.Equal("externalEndpoint", Settings.HttpClientKey);
     }
+}
 
-    [Trait("Category", "Settings loading")]
+[Trait("Category", "Settings loading")]
     [Trait("Scenario", "Loading settings without data")]
     public class WhenLoadingSettingsWithoutData : BehavesLikeLoadingSettings
     {

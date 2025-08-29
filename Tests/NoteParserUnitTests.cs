@@ -1,5 +1,6 @@
 using dme_workflow_parser.Models;
 using dme_workflow_parser.Services;
+using Microsoft.Extensions.Logging;
 
 namespace dme_workflow_parser.Tests
 {
@@ -17,7 +18,7 @@ namespace dme_workflow_parser.Tests
                 TextInputFile = "test_physician_note.txt"
             };
 
-            parser = new(settings);
+            parser = new(settings, LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<NoteParser>());
 
         }
 
@@ -80,7 +81,7 @@ namespace dme_workflow_parser.Tests
                 TextInputFile = "non_existent_file.txt"
             };
 
-            parser = new(settings);
+            parser = new(settings, LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<NoteParser>());
         }
 
         [Fact]
@@ -107,14 +108,14 @@ namespace dme_workflow_parser.Tests
                 JsonInputFile = "test_physician_note.json"
             };
 
-            parser = new(settings);
+            parser = new(settings, LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<NoteParser>());
 
         }
 
         [Fact]
         public void ShouldNotReturnAnError()
         {
-            (string? err, Order? order) = parser.Parse();
+            (string? err, Order? order) = parser.Parse(true);
 
             Assert.Null(err);
             Assert.NotNull(order);
@@ -170,7 +171,7 @@ namespace dme_workflow_parser.Tests
                 JsonInputFile = "non_existent_file.json"
             };
 
-            parser = new(settings);
+            parser = new(settings, LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<NoteParser>());
         }
 
         [Fact]

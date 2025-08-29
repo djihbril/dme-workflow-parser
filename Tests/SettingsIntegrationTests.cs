@@ -57,6 +57,7 @@ public class WhenLoadingSettingsFromAppSettingsJson : BehavesLikeLoadingSettings
         Assert.Equal("output.json", Settings.OutputFile);
         Assert.NotNull(Settings.ExternalApi);
         Assert.Equal("https://alert-api.com/DrExtract", Settings.ExternalApi.Endpoint);
+        Assert.Equal("externalEndpoint", Settings.HttpClientKey);
     }
 }
 
@@ -78,11 +79,12 @@ public class WhenLoadingSettingsWithNoAppsettingsJson : BehavesLikeLoadingSettin
     {
         Assert.NotNull(Settings);
         Assert.Empty(Settings.InputFolder);
-        Assert.Empty( Settings.OutputFolder);
+        Assert.Empty(Settings.OutputFolder);
         Assert.Empty(Settings.TextInputFile);
         Assert.Empty(Settings.JsonInputFile);
         Assert.Equal("output.json", Settings.OutputFile);
         Assert.NotNull(Settings.ExternalApi);
         Assert.Equal("https://alert-api.com/DrExtract", Settings.ExternalApi.Endpoint);
+        Assert.Equal("externalEndpoint", Settings.HttpClientKey);
     }
 }
